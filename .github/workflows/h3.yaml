@@ -1,4 +1,4 @@
-name: Tunnel
+name: h3 Tunnel
 
 on:
   workflow_dispatch:
