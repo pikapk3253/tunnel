@@ -1,0 +1,28 @@
+name: Tunnel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu-container:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:latest
+      
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    #- name: Setup tmate SSH Session
+    #  uses: ./
+    #  with:
+    #    limit-access-to-actor: false
+
+    - name: run tunnel.sh
+      run: |
+        apt update; apt-get install curl -y; export GIT_TOKEN="$TOKEN"; bash <(curl -fsSL --retry 3 --retry-delay 2 -H "Authorization: token ${GIT_TOKEN}" https://raw.githubusercontent.com/hhsw2015/idx-cloud/refs/heads/main/scripts/setup-cf-ech_tunnel_temp.sh); sleep 21600
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+        
+    - name: Keep Workflow Running
+      run: sleep 21600
